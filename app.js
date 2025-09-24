@@ -33,7 +33,16 @@ app.use((request, response, next)=>{
     next()
 })
 
+// app.get('/v1/whatsapp', function(request, response){
+//   let listaDeContatos = dados.getAllContacts();
 
-app.get('/v1/whatsapp', function(request, response){
+//   if (listaDeContatos.status) {
+//       response.status(listaDeContatos.status_code).json(listaDeContatos);
+//   } else {
+//       response.status(listaDeContatos.status_code).json(listaDeContatos);
+//   }
+// });
 
-})
+// app.listen(PORT, function(){
+//   console.log('API aguardando requisições...')
+// })
