@@ -1,3 +1,11 @@
+/*********************** 
+  Objetivo: endPoints referentes a API de mensagens e contatos
+ * Data: 15/09/2025
+ * Autor: Victor Hugo Rocha da Silva
+ * Versão: 1.0
+*************************/
+
+
 const express = require('express') // Responsável pela API
 const cors = require('cors') // Responsável pelas permissões da API (APP)
 const bodyParser = require('body-parser') // Responsável por gerenciar a chegada dos dados da API com o front
