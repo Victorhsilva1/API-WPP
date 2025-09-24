@@ -34,8 +34,50 @@ const getAllContacts = function () {
     }
 }
 
+
+// Função que retorna dados da conta do profile do usuário
+const getAllDados = function (userNumber) {
+    let profile = {
+        status: false,
+        status_code: 404,
+        development: 'Victor Hugo Rocha da Silva',
+        message: 'Usuário não encontrado.'
+    };
+
+    if (dados && dados['whats-users']) {
+        // Usa o método .find() para procurar o usuário
+        const user = dados['whats-users'].find(item => item.number === userNumber);
+
+        if (user) {
+            profile = {
+                status: true,
+                status_code: 200,
+                development: 'Victor Hugo Rocha da Silva',
+
+                profile: {
+                    id: user.id,
+                    account: user.account,
+                    nickname: user.nickname,
+                    "created-since": user["created-since"],
+                    "profile-image": user["profile-image"],
+                    number: user.number,
+                    background: user.background
+                }
+            };
+        }
+    }
+
+    return profile;
+};
+
+
 module.exports = {
-    getAllContacts
+    getAllContacts,
+    getAllDados
 }
 
-console.log(getAllContacts())
+// Testando a função getAllContacts
+// console.log(getAllContacts())
+
+// Teste da função getAllDados
+console.log(getAllDados('11987876567'))
