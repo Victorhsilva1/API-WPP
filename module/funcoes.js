@@ -198,5 +198,4 @@ module.exports = {
 // console.log(getAllMessages ('11966578996'))
 
 // Teste da função getMessagesUser
-// Para testar, você precisa passar o número do usuário e o número do contato
-console.log(getMessagesUser('11987876567', '26999999963'))
+// console.log(getMessagesUser('11987876567', '26999999963'))
