@@ -60,6 +60,8 @@ const getAllDados = function (userNumber) {
                     background: user.background
                 }
             };
+        } else {
+            return MESSAGE_ERRO; // Retorna a mensagem de erro
         }
     }
 
@@ -69,7 +71,7 @@ const getAllDados = function (userNumber) {
 
 // Função para listar dados de contato para cada usuário nome, foto e descrição)
 const getListContact = function (userNumber) {
-    let profile = {
+    let response = {
         status: false,
         status_code: 404,
         development: 'Victor Hugo Rocha da Silva',
@@ -82,23 +84,26 @@ const getListContact = function (userNumber) {
         const user = dados['whats-users'].find(item => item.number === userNumber);
 
         if (user) {
-            profile = {
+            const contactsList = user.contacts.map(contact => {
+                return {
+                    name: contact.name,
+                    description: contact.description,
+                    image: contact.image
+                }
+            });
+
+            response = {
                 status: true,
                 status_code: 200,
                 development: 'Victor Hugo Rocha da Silva',
-
-                profile: {
-                    account: user.account,
-                    nickname: user.nickname,
-                    "profile-image": user["profile-image"],
-                    number: user.number,
-
-                }
+                contacts: contactsList
             };
+        } else {
+            return MESSAGE_ERRO; // Retorna a mensagem de erro
         }
     }
 
-    return profile;
+    return response;
 };
 
 
@@ -117,25 +122,67 @@ const getAllMessages = function (userNumber) {
         const user = dados['whats-users'].find(item => item.number === userNumber);
 
         if (user) {
-            // procurando todos as mensagens trocadas por um uruario
-            const allMessages = user.contacts.find(contact => contact.messages);
+            // Usa flatMap para achatar os arrays de mensagens de todos os contatos em um único array
+            const allMessages = user.contacts.flatMap(contact => contact.messages);
 
-            message = {
+            response = {
                 status: true,
                 status_code: 200,
                 development: 'Victor Hugo Rocha da Silva',
                 messages: allMessages
             };
+            
+        } else {
+            return MESSAGE_ERRO; // Retorna a mensagem de erro
         }
     }
-    return message;
+    return response;
+};
+
+//Função para Listar uma conversa de um usuário e um contato
+// passando nome, número de celular e as conversas
+// query no app.js
+const getMessagesUser = function (userNumber, contactNumber) {
+    let response = {
+        status: false,
+        status_code: 404,
+        development: 'Victor Hugo Rocha da Silva',
+        message: 'Usuário não encontrado.'
+    };
+    
+    if (dados && dados['whats-users']) {
+        const user = dados['whats-users'].find(item => item.number === userNumber);
+
+        if (user) {
+            const contact = user.contacts.find(item => item.number === contactNumber);
+
+            if (contact) {
+                response = {
+                    status: true,
+                    status_code: 200,
+                    development: 'Victor Hugo Rocha da Silva',
+
+                    //pegando as requisições
+                    conversation: {
+                        name: contact.name,
+                        number: contact.number,
+                        messages: contact.messages
+                    }
+                };
+            } else {
+                return MESSAGE_ERRO; // Retorna a mensagem de erro
+            }
+        }
+    }
+    return response;
 };
 
 module.exports = {
     getAllContacts,
     getAllDados,
     getListContact,
-    getAllMessages
+    getAllMessages,
+    getMessagesUser
 }
 
 // Testando a função getAllContacts
@@ -149,3 +196,7 @@ module.exports = {
 
 // Teste da função getAllMessages
 // console.log(getAllMessages ('11966578996'))
+
+// Teste da função getMessagesUser
+// Para testar, você precisa passar o número do usuário e o número do contato
+console.log(getMessagesUser('11987876567', '26999999963'))
