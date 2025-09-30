@@ -33,16 +33,73 @@ app.use((request, response, next)=>{
     next()
 })
 
-// app.get('/v1/whatsapp', function(request, response){
-//   let listaDeContatos = dados.getAllContacts();
 
-//   if (listaDeContatos.status) {
-//       response.status(listaDeContatos.status_code).json(listaDeContatos);
-//   } else {
-//       response.status(listaDeContatos.status_code).json(listaDeContatos);
-//   }
-// });
+app.get('/v1/whatsapp/user/chat', function(request, response){
+  let userNumber = request.query.userNumber;
+  let contactNumber = request.query.contactNumber;
 
-// app.listen(PORT, function(){
-//   console.log('API aguardando requisições...')
-// })
+  console.log(userNumber)
+  console.log(contactNumber)
+  let conversation = dados.getMessagesUser(userNumber, contactNumber);
+
+  response.status(conversation.status_code);
+  response.json(conversation);
+});
+
+app.get('/v1/whatsapp/users/filter', function(request, response){
+  let userNumber = request.query.userNumber;
+  let contactNumber = request.query.contactNumber;
+  let keyword = request.query.keyword; 
+
+  let filteredMessages = dados.getFilterMessages(userNumber, contactNumber, keyword);
+
+  response.status(filteredMessages.status_code);
+  response.json(filteredMessages);
+});
+
+app.get('/v1/whatsapp', function(request, response){
+  let listaDeContatos = dados.getAllContacts();
+
+    response.status(listaDeContatos.status_code);
+    response.json(listaDeContatos);
+});
+
+
+app.get('/v1/whatsapp/user/:userNumber', function(request, response){
+    let userNumber = request.params.userNumber;
+    let userProfile = dados.getAllDados(userNumber);
+
+    response.status(userProfile.status_code);
+    response.json(userProfile);
+});
+
+app.get('/v1/whatsapp/user/:userNumber/contacts', function(request, response){
+    let userNumber = request.params.userNumber;
+    let contactList = dados.getListContact(userNumber);
+
+    response.status(contactList.status_code);
+    response.json(contactList);
+});
+
+app.get('/v1/whatsapp/user/:userNumber/messages', function(request, response){
+    let userNumber = request.params.userNumber;
+    let allMessages = dados.getAllMessages(userNumber);
+
+    response.status(allMessages.status_code);
+    response.json(allMessages);
+});
+
+
+app.listen(PORT, function(){
+  console.log('API rodando em http://localhost:8080')
+})
+
+
+/* 
+    getAllContacts,
+    getAllDados,
+    getListContact,
+    getAllMessages,
+    getMessagesUser,
+    getFilterMessages
+    */ 

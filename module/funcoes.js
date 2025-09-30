@@ -13,7 +13,7 @@ const MESSAGE_ERRO = {
 
 const dados = require('./contatos.js')
 
-// Função que retorna todos os dados
+// Função que retorna todos os dados de todos os contatos
 const getAllContacts = function () {
     let message = {
         status: true,
@@ -129,7 +129,7 @@ const getAllMessages = function (userNumber) {
                 status: true,
                 status_code: 200,
                 development: 'Victor Hugo Rocha da Silva',
-                messages: allMessages
+                messages: allMessages,
             };
             
         } else {
@@ -177,12 +177,64 @@ const getMessagesUser = function (userNumber, contactNumber) {
     return response;
 };
 
+
+
+
+// Função que retorna um filtro de pesquisa de palavra chave
+//com base em uma palavra nas conversas do usuário e do respectivo contato
+
+
+const getFilterMessages = function (userNumber, contactNumber, keyword) {
+    let response = {
+        status: false,
+        status_code: 400,
+        development: 'Victor Hugo Rocha da Silva',
+        message: 'Parâmetros inválidos ou ausentes.'
+    };
+
+    if (!userNumber || !contactNumber || !keyword) {
+        return response;
+    }
+
+    // se os dados 
+    if (dados && dados['whats-users']) {
+        const user = dados['whats-users'].find(item => item.number === userNumber);
+
+        if (user) {
+            const contact = user.contacts.find(item => item.number === contactNumber);
+
+            if (contact) {
+                // Filtra as mensagens que incluem a keyword 
+                const filteredMessages = contact.messages.filter(message =>
+                    message.content.toLowerCase().includes(keyword.toLowerCase())
+                )
+
+                // Retorna as mensagens filtradas
+                response = {
+                    status: true,
+                    status_code: 200,
+                    development: 'Victor Hugo Rocha da Silva',
+                    messages: filteredMessages
+                }
+            } else {
+                return MESSAGE_ERRO; // Retorna a mensagem de erro
+            }
+
+        } else {
+            return MESSAGE_ERRO; // Retorna a mensagem de erro
+        }
+    }
+    return response
+};
+
+// Exporta todas as funções para que possam ser usadas em outros módulos, como o app.js
 module.exports = {
     getAllContacts,
     getAllDados,
     getListContact,
     getAllMessages,
-    getMessagesUser
+    getMessagesUser,
+    getFilterMessages
 }
 
 // Testando a função getAllContacts
@@ -199,3 +251,6 @@ module.exports = {
 
 // Teste da função getMessagesUser
 // console.log(getMessagesUser('11987876567', '26999999963'))
+
+// Teste da função getFilterMessages
+// console.log(getFilterMessages('11966578996', '26999999910', 'papa'))
