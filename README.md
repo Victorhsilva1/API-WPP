@@ -29,7 +29,6 @@ A documentação completa dos *endpoints* e exemplos de requisições está disp
 **Acesse a Documentação Completa:**
 [https://documenter.getpostman.com/view/48076110/2sB3QFRYFr](https://documenter.getpostman.com/view/48076110/2sB3QFRYFr)
 
-[![Run in Postman](https://run.postman.com/button.svg)](https://documenter.getpostman.com/view/48076110/2sB3QFRYFr)
 
 ---
 
